@@ -33,8 +33,7 @@ app.use(express.static("./public"))
 
 const { Schema, Model } = mongoose;
 
-const { CONNECTION_URI, DB_NAME } = process.env;
-
+const { DB_NAME, ENV, DB_USER, DB_PASS } = process.env;
 
 // request logger
 const requestLogger = (req, res, next) => {
@@ -61,7 +60,14 @@ const requestLogger = (req, res, next) => {
 app.use(requestLogger);
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/" + DB_NAME);
+
+    if (ENV == 'local') {
+        await mongoose.connect("mongodb://127.0.0.1:27017/" + DB_NAME);
+    }
+    else {
+        await mongoose.connect("mongodb+srv://" + DB_USER + ":" + DB_PASS + "@cluster0.nynah.mongodb.net/" + DB_NAME + "?retryWrites=true&w=majority");
+    }
+    // mongoose.connect('mongodb://username:password@host:port/database?options...');
     // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
