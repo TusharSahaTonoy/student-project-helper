@@ -100,6 +100,11 @@ app.listen(port, () => {
 
 
 // developer schema
+// get routes
+app.get('/', (req, res) => {
+
+    return res.json('Okay');
+});
 
 
 // get routes
