@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
+
 // import { Navbar, Container } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -12,13 +13,13 @@ import Login from './components/Login';
 import Register from './components/Register';
 import SearchPage from "./components/SearchPage";
 
-
 function App() {
 
   const [programs, setPrograms] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:6500/projects').then((res) => {
-      // console.log(res);
+    axios.get(process.env.REACT_APP_BACKEND_URL + "/projects").then((res) => {
+      console.log(process.env.REACT_APP_BACKEND_URL);
+      console.log(res);
       setPrograms(res.data);
     });
   }, []);

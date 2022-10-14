@@ -17,7 +17,7 @@ export default function Home({ programs }) {
         formData.append('name', nameInput.current.value,);
         formData.append('price', priceInput.current.value,);
 
-        axios.post('http://localhost:6500/project/add', formData).then(function (response) {
+        axios.post(process.env.REACT_APP_BACKEND_URL + "/project/add", formData).then(function (response) {
             if (response.data._id) {
                 navigate('/home');
             }
@@ -42,7 +42,7 @@ export default function Home({ programs }) {
                             <div className="card-body">
                                 <h5 className="card-title">{item.title}</h5>
                                 <p className="card-text">Price: {item.price}</p>
-                                <a href="#" className="btn btn-primary">Go somewhere</a>
+                                <a href="/" className="btn btn-primary">Go somewhere</a>
                             </div>
                         </div>
                     </div>

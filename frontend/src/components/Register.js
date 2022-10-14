@@ -16,7 +16,7 @@ export default function Register() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // axios POST request
-        axios.post('http://localhost:6500/register', {
+        axios.post(process.env.REACT_APP_BACKEND_URL + "/register", {
             name: nameInput.current.value,
             email: emailInput.current.value,
             password: passwordInput.current.value,
