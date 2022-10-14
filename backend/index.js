@@ -17,7 +17,6 @@ const path = require("path");
 const serverless = require('serverless-http');
 
 // import ServerlessHttp from "serverless-http";
-
 require('dotenv').config();
 const Project = require('./Model/Project');
 const User = require('./Model/User');
@@ -27,7 +26,7 @@ const User = require('./Model/User');
 
 
 const app = express();
-const router = express.Router();
+const router = express.Router()
 app.use(cors());
 app.use(bodyParser.json());
 // app.use(bodyParser.raw());
@@ -90,30 +89,22 @@ const upload = multer({
 const port = 6500;
 const base_url = 'http://localhost:' + port;
 
-
-/* Projects */
-
-// mongoose
-
-
-
 // developer schema
 // get routes
-app.get('/', (req, res) => {
 
-    return res.send('okay');
+router.get('/', function (req, res) {
+    res.send('Birds home page');
 });
 
-
 // get routes
-app.get('/projects', async (req, res) => {
+router.get('/projects', async (req, res) => {
 
     const result = await Project.find();
     return res.json(result);
 });
 
 // post
-app.post('/project/add', upload, async (req, res) => {
+router.post('/project/add', upload, async (req, res) => {
     // console.log(req.body);
     // console.log(req);
 
@@ -153,12 +144,12 @@ app.post('/project/add', upload, async (req, res) => {
     // let result = 'OKAY';
 
     // console.log(result);
-    return res.json(result);
+    res.json(result);
 });
 
 // developoer
 // register
-app.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     const { name, email, password, type } = req.body;
     // console.log(req.body);
     // return res.json(req.body);
@@ -178,7 +169,7 @@ app.post('/register', async (req, res) => {
 
 });
 
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     let user = await User.findOne({ email: email });
@@ -192,11 +183,12 @@ app.post('/login', async (req, res) => {
     return res.json({ "status": false });
 });
 
-app.get('/users', async (req, res) => {
+router.get('/users', async (req, res) => {
     const users = await User.find();
     return res.json(users);
 });
 
+app.use(router);
 
 console.log(ENV);
 if (ENV == 'local') {
