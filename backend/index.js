@@ -93,7 +93,7 @@ const base_url = 'http://localhost:' + port;
 // get routes
 
 router.get('/', function (req, res) {
-    res.send('Birds home page');
+    return res.json(process.env);
 });
 
 // get routes
@@ -191,15 +191,7 @@ router.get('/users', async (req, res) => {
 app.use(router);
 
 console.log(ENV);
-if (ENV == 'local') {
-    app.listen(port, () => {
-        main().then(console.log('Mongoose Connected')).catch(err => console.log(err));
-        console.log('Server stated at ' + base_url);
-    });
-    return;
-}
-else {
-    module.exports.handler = serverless(app);
-}
-
-
+app.listen(process.env.PORT || port, () => {
+    main().then(console.log('Mongoose Connected')).catch(err => console.log(err));
+    console.log('Server stated at ' + base_url);
+});
