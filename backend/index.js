@@ -5,22 +5,25 @@
     console.log('Server stated at '+ base_url);
 });
  */
+'use strict';
 
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
-import bcrypt from "bcrypt";
-import multer from "multer";
-import path from "path";
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+const multer = require("multer");
+const path = require("path");
+const serverless = require('serverless-http');
 
-import 'dotenv/config';
+// import ServerlessHttp from "serverless-http";
 
-import Project from "./Model/Project.js";
-import User from "./Model/User.js";
+require('dotenv').config();
+const Project = require('./Model/Project');
+const User = require('./Model/User');
 
 
-import ProjectController from "./Controller/ProjectController.js";
+// import ProjectController from "./Controller/ProjectController.js";
 
 
 const app = express();
@@ -88,11 +91,6 @@ const port = 6500;
 const base_url = 'http://localhost:' + port;
 
 
-app.listen(port, () => {
-    main().then(console.log('Mongoose Connected')).catch(err => console.log(err));
-    console.log('Server stated at ' + base_url);
-});
-
 /* Projects */
 
 // mongoose
@@ -103,7 +101,7 @@ app.listen(port, () => {
 // get routes
 app.get('/', (req, res) => {
 
-    return res.json('Okay');
+    return res.send('okay');
 });
 
 
@@ -119,18 +117,18 @@ app.post('/project/add', upload, async (req, res) => {
     // console.log(req.body);
     // console.log(req);
 
+    let newProjec = {
+        title: req.body.name,
+        price: req.body.price,
+    };
+
     if (!req.file) {
         console.log("No file upload");
     } else {
-
-        console.log(req.file.filename)
+        newProjec.image = req.file.filename || null
     }
 
-    const newProject = new Project({
-        title: req.body.name,
-        price: req.body.price,
-        image: req.file.filename || null
-    });
+    const newProject = new Project(newProjec);
     let result = await newProject.save();
 
     /* const projects = [
@@ -198,4 +196,18 @@ app.get('/users', async (req, res) => {
     const users = await User.find();
     return res.json(users);
 });
+
+
+console.log(ENV);
+if (ENV == 'local') {
+    app.listen(port, () => {
+        main().then(console.log('Mongoose Connected')).catch(err => console.log(err));
+        console.log('Server stated at ' + base_url);
+    });
+    return;
+}
+else {
+    module.exports.handler = serverless(app);
+}
+
 
