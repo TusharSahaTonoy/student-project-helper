@@ -18,7 +18,7 @@ function App() {
   const [programs, setPrograms] = useState([]);
   useEffect(() => {
     axios.get(process.env.REACT_APP_BACKEND_URL + "/projects").then((res) => {
-      console.log(process.env.REACT_APP_BACKEND_URL);
+      console.log(process.env);
       console.log(res);
       setPrograms(res.data);
     });
