@@ -6,12 +6,13 @@ import axios from 'axios';
 
 // import { Navbar, Container } from 'react-bootstrap';
 
-import 'bootstrap/dist/css/bootstrap.css';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
-import SearchPage from "./components/SearchPage";
+import Navbar from './template/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import SearchPage from "./pages/SearchPage";
+import Projects from "./pages/Projects";
+import Footer from "./template/Footer";
 
 function App() {
 
@@ -25,22 +26,23 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <main class="main" id="top">
+
       <Router>
-        <div className="container">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home programs={programs} />} />
-            <Route path="/home" element={<Home programs={programs} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/search" element={<SearchPage />} />
-          </Routes>
 
-        </div>
+        <Navbar />
+        <Projects />
+        {/* <Routes>
+          <Route path="/" element={<Home programs={programs} />} />
+          <Route path="/home" element={<Home programs={programs} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/search" element={<SearchPage />} />
+        </Routes> */}
+
+        <Footer />
       </Router>
-
-    </div>
+    </main>
   );
 }
 
