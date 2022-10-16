@@ -1,73 +1,45 @@
-import axios from "axios";
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function Home({ programs }) {
 
-    let nameInput = useRef('');
-    let priceInput = useRef('');
-    let navigate = useNavigate();
+export default function Home() {
+    return (
+        <>
+            <div className="pagetitle">
+                <h1>Blank Page</h1>
+                <nav>
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li className="breadcrumb-item">Pages</li>
+                        <li className="breadcrumb-item active">Blank</li>
+                    </ol>
+                </nav>
+            </div>
 
-    const [selectedFile, setSelectedFile] = useState(null);
+            <section className="section">
+                <div className="row">
+                    <div className="col-lg-6">
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append('name', nameInput.current.value,);
-        formData.append('price', priceInput.current.value,);
-
-        axios.post(process.env.REACT_APP_BACKEND_URL + "/project/add", formData).then(function (response) {
-            if (response.data._id) {
-                navigate('/home');
-            }
-            console.log(response.data);
-
-        }).catch(function (error) {
-            console.log(error);
-        });
-    };
-
-    const handleFileSelect = (e) => {
-        setSelectedFile(e.target.files[0])
-        // console.log(selectedFile);
-    }
-
-    return (<>
-        <div className="row">
-            {programs.map((item) => {
-                return (
-                    <div key={item._id} className="col-sm-6">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">{item.title}</h5>
-                                <p className="card-text">Price: {item.price}</p>
-                                <a href="/" className="btn btn-primary">Go somewhere</a>
+                                <h5 className="card-title">Example Card</h5>
+                                <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
                             </div>
                         </div>
+
                     </div>
-                );
-            })}
-        </div>
-        <div className="row">
-            <form className="col-6" onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="name" className="form-label">Name</label>
-                    <input type="text" className="form-control" id="name" ref={nameInput} />
-                </div>
 
-                <div className="mb-3">
-                    <label htmlFor="price" className="form-label">Price ($)</label>
-                    <input type="number" className="form-control" id="price" ref={priceInput} />
-                </div>
+                    <div className="col-lg-6">
 
-                <div className="mb-3">
-                    <label htmlFor="image" className="form-label">Project Image</label>
-                    <input type="file" className="form-control" id="image" onChange={handleFileSelect} />
-                </div>
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Example Card</h5>
+                                <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+                            </div>
+                        </div>
 
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </>);
+                    </div>
+                </div>
+            </section>
+        </>
+    );
+
 }
