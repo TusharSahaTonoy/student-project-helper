@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Projects() {
 
@@ -52,7 +52,7 @@ export default function Projects() {
                             <div className="card-body">
                                 <h5 className="card-title">{item.title}</h5>
                                 <p className="card-text">Price: {item.price}</p>
-                                <a href="/" className="btn btn-primary">Go somewhere</a>
+                                <Link to={'/projects/' + item._id} className="btn btn-primary" > Go somewhere </Link>
                             </div>
                         </div>
                     </div>

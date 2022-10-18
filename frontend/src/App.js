@@ -14,6 +14,7 @@ import Projects from "./pages/projects/Projects";
 import Footer from "./template/Footer";
 import Header from "./template/Header";
 import Sidebar from "./template/Sidebar";
+import ProjectDetails from "./pages/projects/project-details/ProjectDetails";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<ProjectDetails />} />
           <Route path="/search" element={<SearchPage />} />
         </Routes>
 

@@ -20,7 +20,7 @@ const serverless = require('serverless-http');
 require('dotenv').config();
 const Project = require('./Model/Project');
 const User = require('./Model/User');
-
+const project_image_path = './public/image/projects/';
 
 // import ProjectController from "./Controller/ProjectController.js";
 
@@ -75,9 +75,10 @@ async function main() {
 
 //! Use of Multer
 const storage = multer.diskStorage({
-    destination: "./public/",
+    // destination: "./public/image/projects",
+    destination: project_image_path,
     filename: function (req, file, cb) {
-        cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+        cb(null, "p-" + Date.now() + path.extname(file.originalname));
     }
 });
 
@@ -186,6 +187,10 @@ router.post('/login', async (req, res) => {
 router.get('/users', async (req, res) => {
     const users = await User.find();
     return res.json(users);
+});
+
+router.get('/project/images/:image', (req, res) => {
+    return res.sendFile(project_image_path + req.params.image, { root: __dirname });
 });
 
 app.use(router);
