@@ -8,13 +8,14 @@
 'use strict';
 
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const cookieSession = require("cookie-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
-const serverless = require('serverless-http');
 
 // import ServerlessHttp from "serverless-http";
 require('dotenv').config();
@@ -26,12 +27,32 @@ const project_image_path = './public/image/projects/';
 
 
 const app = express();
-const router = express.Router()
+const router = express.Router();
+app.use(express.static("./public"));
+
 app.use(cors());
-app.use(bodyParser.json());
-// app.use(bodyParser.raw());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("./public"))
+
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+    cookieSession({
+        name: "bezkoder-session",
+        secret: "COOKIE_SECRET", // should use as secret environment variable
+        httpOnly: true
+    })
+);
+
+app.use(function (req, res, next) {
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, Content-Type, Accept"
+    );
+    next();
+});
 
 const { Schema, Model } = mongoose;
 
@@ -60,6 +81,29 @@ const requestLogger = (req, res, next) => {
     next();
 };
 app.use(requestLogger);
+
+const config = {
+    secret: "bezkoder-secret-key"
+};
+const verifyToken = (req, res, next) => {
+    let token = req.session.token;
+
+    if (!token) {
+        return res.status(403).send({
+            message: "No token provided!",
+        });
+    }
+
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({
+                message: "Unauthorized!",
+            });
+        }
+        req.userId = decoded.id;
+        next();
+    });
+};
 
 async function main() {
 
@@ -117,7 +161,7 @@ router.post('/project/add', upload, async (req, res) => {
     if (!req.file) {
         console.log("No file upload");
     } else {
-        newProjec.image = req.file.filename || null
+        newProjec.image = req.file.filename || null;
     }
 
     const newProject = new Project(newProjec);
@@ -170,6 +214,12 @@ router.post('/register', async (req, res) => {
 
 });
 
+router.get('/is-authenticated', (req, res) => {
+    res.json();
+});
+
+
+
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -177,14 +227,35 @@ router.post('/login', async (req, res) => {
     if (user) {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-            return res.json({ status: true });
+
+            // initiate token
+            const token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 86400, // 24 hours
+            });
+
+            req.session.token = token;
+            return res.status(200).send({
+                id: user.id,
+                email: user.email,
+            });
         }
     }
 
     return res.json({ "status": false });
 });
 
-router.get('/users', async (req, res) => {
+router.post('/logout', async (req, res) => {
+    try {
+        req.session = null;
+        return res.status(200).json({
+            message: "You've been signed out!"
+        });
+    } catch(err) {
+        this.next(err);
+    }
+});
+
+router.get('/users', verifyToken, async (req, res) => {
     const users = await User.find();
     return res.json(users);
 });
