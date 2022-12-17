@@ -13,6 +13,12 @@ export default function Sidebar() {
                     </Link>
                 </li>
                 <li className="nav-item">
+                    <Link className="nav-link collapsed" to="/users">
+                        <i className="bi bi-grid"></i>
+                        <span>Users</span>
+                    </Link>
+                </li>
+                <li className="nav-item">
                     <Link className="nav-link collapsed" to="/projects">
                         <i className="bi bi-grid"></i>
                         <span>Projects</span>

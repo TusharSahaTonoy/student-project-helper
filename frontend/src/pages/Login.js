@@ -14,8 +14,12 @@ export default function Login() {
         axios.post(process.env.REACT_APP_BACKEND_URL + "/login", {
             email: emailInput.current.value,
             password: passwordInput.current.value,
-        }).then(function (response) {
-            if (response.data.status) {
+        })
+        .then(function (response) {
+            if (response.data.id) {
+
+                localStorage.setItem('x-csrf-token', response.headers["x-csrf-token"]);
+                // console.log(response.headers["x-csrf-token"], localStorage.getItem('x-csrf-token'));
                 navigate('/home');
             }
             else {

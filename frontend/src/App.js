@@ -3,6 +3,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+
 // import { Navbar, Container } from 'react-bootstrap';
 
 // import Navbar from './template/Navbar';
@@ -15,6 +16,7 @@ import Footer from "./template/Footer";
 import Header from "./template/Header";
 import Sidebar from "./template/Sidebar";
 import ProjectDetails from "./pages/projects/project-details/ProjectDetails";
+import Users from "./pages/Users";
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/users" element={<Users />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetails />} />
           <Route path="/search" element={<SearchPage />} />

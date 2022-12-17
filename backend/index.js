@@ -30,7 +30,22 @@ const app = express();
 const router = express.Router();
 app.use(express.static("./public"));
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    exposedHeaders: 'Authorization',
+}));
+
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Accept', 'application/json, text/plain, */*');
+    res.header('Accept-Encoding', 'gzip, deflate, br');
+    res.header('Accept-Language', 'en-US,en;q=0.9');
+    res.header('Connection', 'keep-alive');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -46,13 +61,6 @@ app.use(
     })
 );
 
-app.use(function (req, res, next) {
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, Content-Type, Accept"
-    );
-    next();
-});
 
 const { Schema, Model } = mongoose;
 
@@ -86,8 +94,8 @@ const config = {
     secret: "bezkoder-secret-key"
 };
 const verifyToken = (req, res, next) => {
-    let token = req.session.token;
-
+    let token = req.header('X-Csrf-Token');
+    console.log(token);
     if (!token) {
         return res.status(403).send({
             message: "No token provided!",
@@ -100,7 +108,7 @@ const verifyToken = (req, res, next) => {
                 message: "Unauthorized!",
             });
         }
-        req.userId = decoded.id;
+        console.log(decoded);
         next();
     });
 };
@@ -214,11 +222,6 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.get('/is-authenticated', (req, res) => {
-    res.json();
-});
-
-
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -233,8 +236,8 @@ router.post('/login', async (req, res) => {
                 expiresIn: 86400, // 24 hours
             });
 
-            req.session.token = token;
-            return res.status(200).send({
+            res.header('Access-Control-Expose-Headers', 'Access-Token, Uid, x-csrf-token');
+            return res.header("x-csrf-token", token).status(200).send({
                 id: user.id,
                 email: user.email,
             });
@@ -250,7 +253,7 @@ router.post('/logout', async (req, res) => {
         return res.status(200).json({
             message: "You've been signed out!"
         });
-    } catch(err) {
+    } catch (err) {
         this.next(err);
     }
 });
