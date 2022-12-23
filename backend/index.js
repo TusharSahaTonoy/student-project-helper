@@ -95,7 +95,7 @@ const config = {
 };
 const verifyToken = (req, res, next) => {
     let token = req.header('X-Csrf-Token');
-    console.log(token);
+    // console.log(token);
     if (!token) {
         return res.status(403).send({
             message: "No token provided!",
@@ -108,7 +108,7 @@ const verifyToken = (req, res, next) => {
                 message: "Unauthorized!",
             });
         }
-        console.log(decoded);
+        // console.log(decoded);
         next();
     });
 };
@@ -230,7 +230,6 @@ router.post('/login', async (req, res) => {
     if (user) {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-
             // initiate token
             const token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400, // 24 hours
@@ -247,16 +246,16 @@ router.post('/login', async (req, res) => {
     return res.json({ "status": false });
 });
 
-router.post('/logout', async (req, res) => {
-    try {
-        req.session = null;
-        return res.status(200).json({
-            message: "You've been signed out!"
-        });
-    } catch (err) {
-        this.next(err);
-    }
-});
+// router.post('/logout', async (req, res) => {
+//     try {
+//         req.session = null;
+//         return res.status(200).json({
+//             message: "You've been signed out!"
+//         });
+//     } catch (err) {
+//         this.next(err);
+//     }
+// });
 
 router.get('/users', verifyToken, async (req, res) => {
     const users = await User.find();

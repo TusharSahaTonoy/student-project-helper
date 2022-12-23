@@ -1,12 +1,15 @@
 import axios from "axios";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
 
     let emailInput = useRef('');
     let passwordInput = useRef('');
     let navigate = useNavigate();
+
+    const { setLogin } = useContext(AuthContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,6 +22,7 @@ export default function Login() {
             if (response.data.id) {
 
                 localStorage.setItem('x-csrf-token', response.headers["x-csrf-token"]);
+                setLogin(true);
                 // console.log(response.headers["x-csrf-token"], localStorage.getItem('x-csrf-token'));
                 navigate('/home');
             }

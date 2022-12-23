@@ -17,32 +17,36 @@ import Header from "./template/Header";
 import Sidebar from "./template/Sidebar";
 import ProjectDetails from "./pages/projects/project-details/ProjectDetails";
 import Users from "./pages/Users";
+import AuthContextProvider from "./context/AuthContext";
 
 function App() {
   return (
     <Router>
 
-
-      <Header />
-      <Sidebar />
+      <AuthContextProvider>
 
 
-      <main id="main" className="main">
+        <Header />
+        <Sidebar />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:id" element={<ProjectDetails />} />
-          <Route path="/search" element={<SearchPage />} />
-        </Routes>
 
-      </main>
+        <main id="main" className="main">
 
-      <Footer />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetails />} />
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+
+        </main>
+
+        <Footer />
+      </AuthContextProvider>
     </Router>
   );
 }

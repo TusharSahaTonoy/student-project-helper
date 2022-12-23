@@ -40,7 +40,7 @@ export default function Users() {
                             <div className="card-body">
                                 <h5 className="card-title">Default List Group</h5>
                                 <ul className="list-group">
-                                    {users.map(item => <li className="list-group-item"> {item.name} </li>)}
+                                    {users.map(item => <li className="list-group-item" key={item._id}> {item.name} </li>)}
                                 </ul>
                             </div>
                         </div>
