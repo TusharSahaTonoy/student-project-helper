@@ -11,17 +11,17 @@ app.use(express.static("./public"));
 
 
 // default headers
-// app.use(function (req, res, next) {
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-//     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-//     res.header('Access-Control-Allow-Credentials', 'true');
-//     res.header('Accept', 'application/json, text/plain, */*');
-//     res.header('Accept-Encoding', 'gzip, deflate, br');
-//     res.header('Accept-Language', 'en-US,en;q=0.9');
-//     res.header('Connection', 'keep-alive');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-// });
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000, https://student-project-helper.netlify.app');
+    // res.header('Access-Control-Allow-Credentials', 'true');
+    // res.header('Accept', 'application/json, text/plain, */*');
+    // res.header('Accept-Encoding', 'gzip, deflate, br');
+    // res.header('Accept-Language', 'en-US,en;q=0.9');
+    // res.header('Connection', 'keep-alive');
+    // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 
 // cors
 let whitelist = ['https://student-project-helper.netlify.app', 'http://localhost:3000'];
