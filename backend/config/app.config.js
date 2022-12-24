@@ -24,10 +24,23 @@ app.use(express.static("./public"));
 // });
 
 // cors
-app.use(cors({
-    origin: 'http://localhost:3000',
-    exposedHeaders: 'x-csrf-token',
-}));
+let whitelist = ['http://localhost:3000', 'https://student-project-helper.netlify.app'];
+let corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}
+
+app.use(cors(corsOptions));
+
+// app.use(cors({
+//     origin: 'http://localhost:3000',
+//     exposedHeaders: 'x-csrf-token',
+// }));
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
