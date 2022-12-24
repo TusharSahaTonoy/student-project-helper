@@ -8,6 +8,7 @@ export default function Users() {
 
     const [users, setUsers] = useState([]);
     useEffect(() => {
+
         axios.defaults.headers.common['X-Csrf-Token'] = localStorage.getItem('x-csrf-token');
         axios.get(process.env.REACT_APP_BACKEND_URL + "/users").then((res) => {
             // console.log(process.env);
@@ -17,7 +18,7 @@ export default function Users() {
             else
                 navigate('/home');
         });
-    }, []);
+    }, [navigate]);
 
     return (
         <>
