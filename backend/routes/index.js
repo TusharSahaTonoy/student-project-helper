@@ -10,6 +10,5 @@ router.get('/', function (req, res) {
     return res.json(ENV);
 });
 
-
 router.use(AuthRoutes, UserRoutes);
 module.exports = router;
