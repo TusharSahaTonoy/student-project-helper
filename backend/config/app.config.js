@@ -24,16 +24,16 @@ app.use(express.static("./public"));
 // });
 
 // cors
-let whitelist = ['http://localhost:3000', 'https://student-project-helper.netlify.app'];
+let whitelist = ['https://student-project-helper.netlify.app', 'http://localhost:3000'];
 let corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'));
+            callback(new Error('Not allowed by CORS' + origin));
         }
     }
-}
+};
 
 app.use(cors(corsOptions));
 
