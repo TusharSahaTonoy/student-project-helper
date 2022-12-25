@@ -14,7 +14,6 @@ const init = async function() {
     // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
-
 module.exports = {
     'database_name': DB_NAME,
     'user': DB_USER,

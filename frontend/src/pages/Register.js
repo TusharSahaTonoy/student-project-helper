@@ -9,47 +9,28 @@ export default function Register() {
     let passwordInput = useRef('');
     let typeSelect = useRef('');
     let navigate = useNavigate();
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [type, setType] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // axios POST request
+
         axios.post(process.env.REACT_APP_BACKEND_URL + "/register", {
             name: nameInput.current.value,
             email: emailInput.current.value,
             password: passwordInput.current.value,
             type: typeSelect.current.value
         }).then(function (response) {
-            if (response.data._id) {
-                navigate('/home');
+            if (response.data.status) {
+                navigate('/login');
+            }
+            else if (response.data.code === 'user_exist')
+            {
+                alert('User already exist.');
             }
             // console.log(response.data);
 
         }).catch(function (error) {
             console.log(error);
         });
-
-        // const options = {
-        //     url: 'http://localhost:6500/register',
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json;charset=UTF-8'
-        //     },
-        //     data: {
-        //         name: 'David',
-        //         age: 45
-        //     }
-        // };
-
-        // axios(options)
-        //     .then(response => {
-        //         console.log(response.status);
-        //     });
-
-        // console.log(emailInput.current.value, passwordInput.current.value, typeSelect.current.value);
     }
 
     return (

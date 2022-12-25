@@ -1,7 +1,6 @@
 
 const User = require('./User');
 const Project = require('./Project');
+const Role = require('./Role');
 
-const db = { User, Project };
-
-module.exports = db;
+module.exports = { User, Project, Role };

@@ -9,7 +9,7 @@ export default function Login() {
     let passwordInput = useRef('');
     let navigate = useNavigate();
 
-    const { setLogin } = useContext(AuthContext);
+    const { setUser } = useContext(AuthContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,9 +20,11 @@ export default function Login() {
         })
         .then(function (response) {
             if (response.data.id) {
-
                 localStorage.setItem('x-csrf-token', response.headers["x-csrf-token"]);
-                setLogin(true);
+                setUser({
+                    login : true,
+                    role: response.data.role_name
+                });
                 // console.log(response.headers["x-csrf-token"], localStorage.getItem('x-csrf-token'));
                 navigate('/home');
             }
